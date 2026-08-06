@@ -29,5 +29,24 @@ app.MapPost("/api/todos", (ITodoRepository repository, TodoItem item) =>
 {
     return repository.Add(item);
 });
+app.MapPut("/api/todos/{id:guid}", (Guid id, ITodoRepository repository, TodoItem item) =>
+{
+    item.Id = id;
 
+    if (!repository.Update(item))
+    {
+        return Results.NotFound();
+    }
+
+    return Results.NoContent();
+});
+app.MapDelete("/api/todos/{id:guid}", (Guid id, ITodoRepository repository) =>
+{
+    if (!repository.Delete(id))
+    {
+        return Results.NotFound();
+    }
+
+    return Results.NoContent();
+});
 app.Run();

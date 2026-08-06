@@ -19,4 +19,33 @@ public class InMemoryTodoRepository : ITodoRepository
 
         return item;
     }
+    public TodoItem? Get(Guid id)
+{
+    return _items.FirstOrDefault(x => x.Id == id);
+}
+
+public bool Update(TodoItem item)
+{
+    var existing = Get(item.Id);
+
+    if (existing is null)
+        return false;
+
+    existing.Title = item.Title;
+    existing.Completed = item.Completed;
+
+    return true;
+}
+
+public bool Delete(Guid id)
+{
+    var item = Get(id);
+
+    if (item is null)
+        return false;
+
+    _items.Remove(item);
+
+    return true;
+}
 }

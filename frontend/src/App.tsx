@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { addTodo, getTodos } from "./api";
-
+import { addTodo, deleteTodo, getTodos, updateTodo } from "./api";
 type Todo = {
     id: string;
     title: string;
@@ -20,6 +19,14 @@ function App() {
         await addTodo(title);
         setTitle("");
         loadTodos();
+    }
+    async function removeTodo(id: string) {
+      await deleteTodo(id);
+      loadTodos();
+    }
+    async function toggleTodo(todo: Todo) {
+      await updateTodo(todo.id,todo.title,!todo.completed);
+      loadTodos();
     }
 
     useEffect(() => {
@@ -41,9 +48,31 @@ function App() {
 
             <ul>
                 {todos.map(todo => (
-                    <li key={todo.id}>
-                        {todo.title}
-                    </li>
+<li key={todo.id}>
+    <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => toggleTodo(todo)}
+    />
+
+    <span
+        style={{
+            textDecoration: todo.completed
+                ? "line-through"
+                : "none",
+            marginLeft: "10px",
+        }}
+    >
+        {todo.title}
+    </span>
+
+    <button
+        onClick={() => removeTodo(todo.id)}
+        style={{ marginLeft: "10px" }}
+    >
+        Delete
+    </button>
+</li>
                 ))}
             </ul>
         </div>

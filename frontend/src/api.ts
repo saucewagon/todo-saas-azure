@@ -19,3 +19,24 @@ export async function addTodo(title: string) {
 
     return response.json();
 }
+export async function deleteTodo(id: string) {
+    await fetch(`${API_URL}/api/todos/${id}`, {
+        method: "DELETE",
+    });
+}
+export async function updateTodo(
+    id: string,
+    title: string,
+    completed: boolean
+) {
+    await fetch(`${API_URL}/api/todos/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            title,
+            completed,
+        }),
+    });
+}
