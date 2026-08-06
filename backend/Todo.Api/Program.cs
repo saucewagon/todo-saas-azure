@@ -3,9 +3,20 @@ using Todo.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("frontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddSingleton<ITodoRepository, InMemoryTodoRepository>();
 
 var app = builder.Build();
+app.UseCors("frontend");
 
 app.UseHttpsRedirection();
 
