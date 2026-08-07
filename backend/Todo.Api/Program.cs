@@ -41,8 +41,13 @@ app.MapPost("/api/todos", (ITodoRepository repository, CreateTodoRequest request
 })
 .AddEndpointFilter(new ValidationFilter<CreateTodoRequest>());
 
-app.MapPut("/api/todos/{id:guid}", (Guid id, ITodoRepository repository, UpdateTodoRequest request) =>
+app.MapPut("/api/todos/{id:guid}", (Guid id, ITodoRepository repository, UpdateTodoRequest request, ILogger<Program> logger) =>
 {
+    logger.LogInformation(
+    "Updating todo. Title: '{Title}', Completed: {Completed}",
+    request.Title,
+    request.Completed);
+
     var todo = new TodoItem
     {
         Id = id,
@@ -57,7 +62,7 @@ app.MapPut("/api/todos/{id:guid}", (Guid id, ITodoRepository repository, UpdateT
 
     return Results.NoContent();
 })
-.AddEndpointFilter(new ValidationFilter<CreateTodoRequest>());
+.AddEndpointFilter(new ValidationFilter<UpdateTodoRequest>());
 
 app.MapDelete("/api/todos/{id:guid}", (Guid id, ITodoRepository repository) =>
 {
