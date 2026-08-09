@@ -2,6 +2,8 @@ using Todo.Api.Dtos;
 using Todo.Api.Filters;
 using Todo.Api.Repositories;
 using Todo.Api.Models;
+using Microsoft.EntityFrameworkCore;
+using Todo.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,10 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddSingleton<ITodoRepository, InMemoryTodoRepository>();
+
+builder.Services.AddDbContext<TodoDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("TodoDb")));
 
 var app = builder.Build();
 app.UseCors("frontend");

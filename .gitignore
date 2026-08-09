@@ -433,3 +433,6 @@ FodyWeavers.xsd
 **/obj/
 **/publish/
 *.zip
+
+main.bicepparam
+*.json

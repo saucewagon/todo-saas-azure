@@ -1,3 +1,6 @@
+@secure()
+param sqlAdminPassword string
+
 targetScope = 'subscription'
 
 var location = 'westus'
@@ -13,5 +16,15 @@ module appService './appservice.bicep' = {
   scope: resourceGroup
   params: {
     location: location
+  }
+}
+module sql './sql.bicep' = {
+  name: 'todo-api-sql'
+  scope: resourceGroup
+  params: {
+    location: location
+    sqlServerName: 'todo-sql-dev-sauce-sqlserver'
+    databaseName: 'TodoDb'
+    sqlAdminPassword: sqlAdminPassword
   }
 }
