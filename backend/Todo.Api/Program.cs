@@ -7,6 +7,12 @@ using Todo.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//var todoDbConnection =
+ //   builder.Configuration.GetConnectionString("TodoDb");
+
+//Console.WriteLine(
+ //   $"TodoDb connection configured: {!string.IsNullOrWhiteSpace(todoDbConnection)}");
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("frontend", policy =>
