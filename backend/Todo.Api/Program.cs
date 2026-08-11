@@ -23,11 +23,13 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddSingleton<ITodoRepository, InMemoryTodoRepository>();
+//builder.Services.AddSingleton<ITodoRepository, InMemoryTodoRepository>();
 
 builder.Services.AddDbContext<TodoDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("TodoDb")));
+
+builder.Services.AddScoped<ITodoRepository, EfTodoRepository>();
 
 var app = builder.Build();
 app.UseCors("frontend");
