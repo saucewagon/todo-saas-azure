@@ -1,4 +1,5 @@
 param location string
+param appInsightsConnectionString string
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: 'todo-api-plan'
@@ -14,5 +15,13 @@ resource appService 'Microsoft.Web/sites@2023-12-01' = {
   location: location
   properties: {
     serverFarmId: appServicePlan.id
+    siteConfig: {
+      appSettings: [
+        {
+          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+          value: appInsightsConnectionString
+        }
+      ]
+    }
   }
 }

@@ -4,6 +4,7 @@ using Todo.Api.Repositories;
 using Todo.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Todo.Api.Data;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Console.WriteLine(
  //   $"TodoDb connection configured: {!string.IsNullOrWhiteSpace(todoDbConnection)}");
+
+builder.Services.AddOpenTelemetry().UseAzureMonitor();
 
 builder.Services.AddCors(options =>
 {

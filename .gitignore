@@ -434,5 +434,4 @@ FodyWeavers.xsd
 **/publish/
 *.zip
 
-main.bicepparam
 *.json
