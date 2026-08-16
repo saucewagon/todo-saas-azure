@@ -2,8 +2,13 @@ param location string
 
 param sqlServerName string
 param databaseName string
+param entraAdminObjectId string
+param entraAdminLogin string
+
 @secure()
 param sqlAdminPassword string
+
+
 
 
 resource sqlServer 'Microsoft.Sql/servers@2025-01-01' = {
@@ -12,6 +17,13 @@ resource sqlServer 'Microsoft.Sql/servers@2025-01-01' = {
   properties: {
     administratorLogin: 'todoadmin'
     administratorLoginPassword: sqlAdminPassword
+    administrators: {
+        administratorType: 'ActiveDirectory'
+        login: entraAdminLogin
+        principalType: 'User'
+        sid: entraAdminObjectId
+        tenantId: subscription().tenantId
+    }
   }
 }
 

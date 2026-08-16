@@ -1,5 +1,7 @@
 @secure()
 param sqlAdminPassword string
+param entraAdminObjectId string
+param entraAdminLogin string
 
 targetScope = 'subscription'
 
@@ -38,5 +40,7 @@ module sql './sql.bicep' = {
     sqlServerName: 'todo-sql-dev-sauce-sqlserver'
     databaseName: 'TodoDb'
     sqlAdminPassword: sqlAdminPassword
+    entraAdminObjectId: entraAdminObjectId
+    entraAdminLogin: entraAdminLogin
   }
 }
