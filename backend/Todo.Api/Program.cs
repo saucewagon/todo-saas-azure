@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("frontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173","https://red-bay-01005210f.7.azurestaticapps.net/")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
