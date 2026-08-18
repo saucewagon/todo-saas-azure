@@ -10,10 +10,42 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: |
+    az bicep build --file infrastructure/main.bicep
+  displayName: 'Validate Bicep'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    dotnet restore backend/Todo.Api
+    dotnet publish backend/Todo.Api --configuration Release --output $(Build.ArtifactStagingDirectory)/api
+  displayName: 'Build API'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/api'
+    artifact: 'api'
+  displayName: 'Publish API artifact'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'todo-saas-service-connection'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az account show --query "{subscription:id, tenant:tenantId, user:user.name, type:user.type}" -o json
+      az deployment sub create \
+        --location eastus \
+        --template-file infrastructure/main.bicep \
+        --parameters infrastructure/main.bicepparam
+  env:
+    SQL_ADMIN_PASSWORD: $(SQL_ADMIN_PASSWORD)
+    ENTRA_ADMIN_OBJECT_ID: $(ENTRA_ADMIN_OBJECT_ID)
+    ENTRA_ADMIN_LOGIN: $(ENTRA_ADMIN_LOGIN)
+  displayName: 'Deploy Azure infrastructure'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'todo-saas-service-connection'
+    appType: 'webApp'
+    appName: 'todo-api-dev-sauce'
+    package: '$(Build.ArtifactStagingDirectory)/api'
+  displayName: 'Deploy API to App Service'
