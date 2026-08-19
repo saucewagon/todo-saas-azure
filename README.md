@@ -1,8 +1,8 @@
 # Todo SaaS Azure
 
-A production-style Todo application built to learn Azure cloud architecture.
+This project is a Todo SaaS application built around a modern Azure-based architecture, with a React frontend, ASP.NET Core backend API, and Azure SQL Database. This was built to learn Azure cloud architecture.
 
-## Goals
+## Original Goals
 
 - Build a full-stack application
 - Deploy using Azure services
@@ -12,22 +12,24 @@ A production-style Todo application built to learn Azure cloud architecture.
 
 ## Architecture
 
-Current stage:
+![Todo SaaS Azure Architecture](docs/architecture.svg)
 
-React → ASP.NET Core API → In-memory storage
+- React frontend hosted on Azure Static Web Apps
+- ASP.NET Core REST API hosted on Azure App Service
+- Azure SQL Database for persistent data
+- Azure Application Insights for application monitoring and telemetry
+- Microsoft Entra ID / Managed Identity for passwordless API-to-database authentication
+- Bicep for Infrastructure as Code
+- GitHub for source control
+- GitHub Actions for frontend CI/CD
+- Azure DevOps for backend and infrastructure CI/CD
+- Workload Identity Federation for secure CI/CD authentication without stored client secrets
 
-Future evolution:
-
-React
-↓
-Azure hosting
-↓
-ASP.NET Core API
-↓
-Azure SQL
-↓
-Azure Storage
-↓
-Managed Identity
-↓
-Monitoring and Security
+# Future Directions
+- Separate dev and production environments
+- Azure VNets and Private Endpoints
+- Redis for caching frequently accessed items  
+- Blob storage for media uploads
+- User accounts / authentication
+- Email notification when item completed: necessitating event driven architecture (service bus / kafka)
+- When requirements necessitate microservices, introduce containerization / orchestration. Possible future services: todo service, notification service, analytics
